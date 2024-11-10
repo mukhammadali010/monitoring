@@ -44,7 +44,7 @@ const ConditionalYandex = () => {
   // Create a unique key whenever data changes
   const mapKey = useMemo(() => `${lat}-${lon}`, [lat, lon]);
 
-  return data ? <Yandex key={mapKey} center={[lat, lon]} /> : <div>Loading...</div>;
+  return data ? <Yandex key={mapKey} center={[lat, lon]} /> :'';
 };
 
 export default ConditionalYandex;
