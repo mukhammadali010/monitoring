@@ -7,6 +7,7 @@ const Container = styled.div`
   background: var(--foundation-white-white-50, #fefefe);
   box-shadow: 0px 4px 24px 0px rgba(51, 51, 51, 0.08);
   align-items: flex-start;
+  flex-wrap:wrap;
   gap: 16px;
   .card__title{
     display: flex;

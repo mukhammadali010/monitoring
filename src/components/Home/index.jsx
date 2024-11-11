@@ -16,8 +16,7 @@ const Home = () => {
     <Container>
       <Mycontext.Provider value={{data , setData}}>
         <Navbar />
-        {/* Render the nested route here */}
-        <Outlet />  {/* This will render the nested route (like Sanoat) */}
+        <Outlet /> 
         <ConditionalYandex />
         <MapComponent />
         <Axborot />

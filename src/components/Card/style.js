@@ -22,6 +22,10 @@ const Container = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+    img{
+      width:100%;
+      border-radius:12px;
+    }
   .cardFooter{
     display: flex;
     align-items: center;
