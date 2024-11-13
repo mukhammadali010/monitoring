@@ -1,0 +1,22 @@
+.pollution-card {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+
+.pollution-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.pollution-card .pollution-details p {
+    margin: 4px 0;
+    font-size: 0.9em;
+    color: #555;
+}
