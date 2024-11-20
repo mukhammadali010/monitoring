@@ -5,6 +5,7 @@ const YANDEX_MAPS_API_KEY = '78eb91a1-8baf-4f28-be21-30ad54e78407';
 const MapComponent = () => {
     const [map, setMap] = useState(null);
     const [smokeParticles, setSmokeParticles] = useState([]);
+    const [userLocation, setUserLocation] = useState(null);
 
     useEffect(() => {
         if (!document.querySelector(`script[src*="api-maps.yandex.ru"]`)) {
@@ -53,14 +54,13 @@ const MapComponent = () => {
         const pollutionLevel = getRandomPollutionLevel();
         const impact = getImpactAssessment(pollutionLevel);
 
-        // Determine the color based on the pollution level
         let color;
         if (pollutionLevel > 200) {
-            color = 'rgba(255, 0, 0, 0.6)'; // Red for high risk
+            color = 'rgba(255, 0, 0, 0.6)';
         } else if (pollutionLevel > 100) {
-            color = 'rgba(255, 165, 0, 0.6)'; // Orange for moderate risk
+            color = 'rgba(255, 165, 0, 0.6)';
         } else {
-            color = 'rgba(0, 255, 0, 0.6)'; // Green for low risk
+            color = 'rgba(0, 255, 0, 0.6)';
         }
 
         const smokeParticle = new ymaps.Placemark(
@@ -92,7 +92,6 @@ const MapComponent = () => {
 
     const handleGenerate = () => {
         if (map) {
-            // Clear any existing particles from the map
             smokeParticles.forEach(particle => map.geoObjects.remove(particle));
             setSmokeParticles([]);
 
@@ -109,18 +108,61 @@ const MapComponent = () => {
                 } else {
                     clearInterval(intervalId);
                 }
-            }, 500); // Add a new particle every 500 milliseconds
+            }, 500);
+        }
+    };
+
+    const getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setUserLocation([latitude, longitude]);
+
+                    const userMarker = new ymaps.Placemark(
+                        [latitude, longitude],
+                        { 
+                            hintContent: 'Your Location',
+                            balloonContent: 'You are here!',
+                        },
+                        {
+                            preset: 'islands#blueDotIcon',
+                        }
+                    );
+
+                    map.geoObjects.add(userMarker);
+                    map.setCenter([latitude, longitude], 13);
+                },
+                (error) => console.error('Error getting location:', error)
+            );
+        } else {
+            alert('Geolocation is not supported by your browser.');
         }
     };
 
     return (
         <div>
             <div id="map" style={{ width: '100%', height: '500px' }}></div>
-            <button onClick={handleGenerate} className="btnGenerate">
-                Generate Smoke Particles
-            </button>
+            <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+                <button onClick={handleGenerate} style={buttonStyle}>
+                    Generate Smoke Particles
+                </button>
+                <button onClick={getLocation} style={buttonStyle}>
+                    Show My Location
+                </button>
+            </div>
         </div>
     );
+};
+
+const buttonStyle = {
+    padding: '10px 20px',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
 };
 
 export default MapComponent;

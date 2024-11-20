@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  max-width: 450px;
+  max-width: 380px;
   padding: 12px;
   height:400px;
   border-radius: 12px;
