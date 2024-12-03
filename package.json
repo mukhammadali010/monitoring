@@ -16,8 +16,13 @@
     "@mui/material": "^6.1.6",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
+    "chart.js": "^4.4.6",
+    "chartjs-chart-financial": "^0.2.1",
+    "crypto-js": "^4.2.0",
+    "d3": "^7.9.0",
     "mui": "^0.0.1",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "react-spring": "^9.7.4",
@@ -36,6 +41,6 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
-    "vite": "^5.4.10"
+    "vite": "^5.4.11"
   }
 }

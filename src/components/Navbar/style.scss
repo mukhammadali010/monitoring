@@ -1,59 +1,60 @@
 header {
-    padding: 20px 30px;
-    background-color: #1876d2;
-    width: 100%;
-    z-index: 999;
-    position: sticky;
-    top: 0;
-  }
-  
-  .container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  img {
-    width: 150px;
-  }
-  
-  nav {
-    display: flex;
-    gap: 30px;
-  
-    a {
-      color: white;
-      text-decoration: none;
-    }
-  
-    // Hide the navigation on small screens
-    @media (max-width: 768px) {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      background-color: #1876d2;
-      padding: 20px;
-    }
-  
-    &.open {
-      display: flex;
-    }
-  }
-  
-  // Style for the menu toggle button (hamburger)
-  .menu-toggle {
-    display: none;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
+  padding: 20px 30px;
+  background-color: #1876d2;
+  width: 100%;
+  z-index: 999;
+  position: sticky;
+  top: 0;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+img {
+  width: 150px;
+}
+
+nav {
+  display: flex;
+  gap: 30px;
+
+  a {
     color: white;
-    cursor: pointer;
-  
-    @media (max-width: 768px) {
-      display: block;
-    }
-  }  
+    text-decoration: none;
+  }
+
+  // Hide the navigation on small screens
+  @media (max-width: 768px) {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #1876d2;
+    padding: 20px;
+    gap: 10px;
+  }
+
+  &.open {
+    display: flex;
+  }
+}
+
+// Style for the menu toggle button (hamburger)
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}

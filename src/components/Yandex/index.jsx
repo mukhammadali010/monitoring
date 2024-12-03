@@ -9,7 +9,6 @@ const Yandex = ({ center }) => {
 
   useEffect(() => {
     if (map) {
-      // Check if the Yandex Maps API is available and the TrafficLayer class is defined
       if (window.ymaps && window.ymaps.TrafficLayer) {
         const trafficLayer = new window.ymaps.TrafficLayer();
         map.geoObjects.add(trafficLayer);
@@ -41,7 +40,6 @@ const ConditionalYandex = () => {
   const lon = data?.coord?.lon || 0;
   const lat = data?.coord?.lat || 0;
 
-  // Create a unique key whenever data changes
   const mapKey = useMemo(() => `${lat}-${lon}`, [lat, lon]);
 
   return data ? <Yandex key={mapKey} center={[lat, lon]} /> :'';

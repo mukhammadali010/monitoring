@@ -13,6 +13,18 @@ h1{
   color: white;
 }
 
+:root {
+  /* colors */
+  --colorPrimary: #6200EE;
+  --colorSecondary: #9654F4;
+
+  /* background */
+  --backgroundPrimary: #FEFEFE;
+ 
+  --padding: 5px 130px;
+ 
+}
+
 
 .btnGenerate{
   width: 200px;
@@ -39,4 +51,26 @@ h1{
   padding: 30px;
   margin: 0 10px;
   cursor: pointer;
+}
+.chart-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.chart {
+  width: 30%;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .chart {
+      width: 100%;
+      margin-bottom: 20px;
+  }
 }

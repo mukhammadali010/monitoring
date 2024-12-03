@@ -1,50 +1,83 @@
 import React from 'react';
-import AutoSanoat from "../AutoSanoat";
+import AutoSanoat from '../AutoSanoat';
+import Contact from '../Contact';
 
-const navbar = [
+// Lazy load components for performance
+const Home = React.lazy(() => import('../Home'));
+const SignIn = React.lazy(() => import('../pages/SignInPage/SignInPage'));
+const SignUp = React.lazy(() => import('../pages/SignUpPage/SignUpPage'));
+
+export const navbar = [
   {
-    id: 1,
-    title: 'BoshSahifa',
-    path: '/bosh-sahifa',
-    isPrivate: true,
-    element: <div>Bosh Sahifa</div>, // Element for Bosh Sahifa
-    role: ["admin"],
+    id: '1',
+    path: 'home',
+    title: 'Home',
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Home />
+      </React.Suspense>
+    ),
+    isPrivate: false,
+    isHidden: true,
   },
   {
-    id: 2,
-    title: 'Sanoat',
-    path: '/sanoat',
+    id: '2',
+    path: 'signin',
+    title: 'Sign In',
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <SignIn />
+      </React.Suspense>
+    ),
     isPrivate: true,
-    element: <AutoSanoat />, // Element for Sanoat (AutoSanoat component)
-    role: ["admin"],
-    children: [
-      {
-        id: '2-1',
-        title: 'Automobil Sanoati',
-        path: 'automobil-sanoati', // Child path under /sanoat
-        isPrivate: true,
-        element: <div>Automobil Sanoati</div>,
-        role: ["admin"],
-      },
-      {
-        id: '2-2',
-        title: 'Atmosfera havosini kuzatish tizimlari',
-        path: 'atmosfera', // Child path under /sanoat
-        isPrivate: true,
-        element: <div>Atmosfera havosi</div>,
-        role: ["admin"],
-      },
-      // Add more child routes here as needed
-    ]
+    isHidden: true,
   },
   {
-    id: 3,
-    title: 'Aloqa',
-    path: '/aloqa',
+    id: '3',
+    path: 'signup',
+    title: 'Sign Up',
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <SignUp />
+      </React.Suspense>
+    ),
     isPrivate: true,
-    element: <div>Aloqa</div>, // Element for Aloqa
-    role: ["admin"],
+    isHidden: true,
+  },
+  {
+    id: '4',
+    path: "automobilSanoat",
+    title: "AutoSanoat",
+    element: (
+      <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
+        <AutoSanoat/>
+      </React.Suspense>
+    ),
+    isPrivate: false,
+    isHidden: true,
+  },
+  {
+    id: '5',
+    path: "contact",
+    title: "Contact us",
+    element: (
+      <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
+        <Contact/>
+      </React.Suspense>
+    ),
+    isPrivate: false,
+    isHidden: false ,
+  },
+  {
+    id: '6',
+    path: "/signup",
+    title: "Ro'yxatdan o'tish",
+    element: (
+      <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
+        <Contact/>
+      </React.Suspense>
+    ),
+    isPrivate: false,
+    isHidden: true,
   },
 ];
-
-export default navbar;
