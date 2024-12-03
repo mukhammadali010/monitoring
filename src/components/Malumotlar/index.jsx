@@ -11,7 +11,7 @@ const Malumotlar = () => {
     },
     {
       title: 'Toshkent ichimlik suv sifati',
-      url: 'https://hudud24.uz/media/uploads/2023/10/ichimlik-suvi.jpg',
+      url: 'https://yuz.uz/imageproxy/1200x/https://yuz.uz/file/news/a008daa776b7da3e48ec4fefdf219cfc.jpg',
       text: 'Toshkent suv taʼminoti” MChJ tassarufida 13 ta laboratoriyalar mavjud, shulardan, 5 tasi oqova suvlar boʼyicha kimyo bakteriologik laboratoriyasi qolgan 7 tasi ichimlik .'
     },
     {
