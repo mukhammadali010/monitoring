@@ -4,17 +4,49 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const YANDEX_MAPS_API_KEY = '78eb91a1-8baf-4f28-be21-30ad54e78407'; 
+const YANDEX_MAPS_API_KEY = '78eb91a1-8baf-4f28-be21-30ad54e78407';
+
+const TASHKENT_REGIONS = [
+    { name: 'Yunusabad', coordinates: [41.3664, 69.2806] },
+    { name: 'Mirzo Ulugbek', coordinates: [41.3383, 69.3345] },
+    { name: 'Chilanzar', coordinates: [41.2723, 69.2044] },
+    { name: 'Shaykhontohur', coordinates: [41.3201, 69.2334] },
+    { name: 'Yakkasaray', coordinates: [41.2851, 69.2601] },
+    { name: 'Uchtepa', coordinates: [41.2852, 69.1777] },
+    { name: 'Olmazor', coordinates: [41.2987, 69.2163] },
+    { name: 'Bektemir', coordinates: [41.2422, 69.3432] },
+    { name: 'Sergeli', coordinates: [41.2414, 69.2376] },
+];
 
 const MapComponent = () => {
     const [map, setMap] = useState(null);
     const [pollutedPoints, setPollutedPoints] = useState([]);
     const [chartData, setChartData] = useState({
-        year2022: { labels: [], datasets: [] },
-        year2023: { labels: [], datasets: [] },
-        year2024: { labels: [], datasets: [] },
+        labels: TASHKENT_REGIONS.map((region) => region.name),
+        datasets: [
+            {
+                label: 'Pollution Levels (2022)',
+                data: [],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+            },
+            {
+                label: 'Pollution Levels (2023)',
+                data: [],
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: true,
+            },
+            {
+                label: 'Pollution Levels (2024)',
+                data: [],
+                borderColor: 'rgba(153, 102, 255, 1)',
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                fill: true,
+            },
+        ],
     });
-    const [userLocation, setUserLocation] = useState(null);
 
     useEffect(() => {
         if (!document.querySelector(`script[src*="api-maps.yandex.ru"]`)) {
@@ -39,180 +71,231 @@ const MapComponent = () => {
         });
     };
 
-    const getRandomCoordinates = () => {
-        const minLat = 41.25;
-        const maxLat = 41.35;
-        const minLon = 69.2;
-        const maxLon = 69.3;
-        const lat = minLat + Math.random() * (maxLat - minLat);
-        const lon = minLon + Math.random() * (maxLon - minLon);
-        return [lat, lon];
-    };
-
-    const getRandomPollutionLevels = (baseLevel) =>
-        Array.from({ length: 12 }, () => baseLevel + Math.floor(Math.random() * 20 - 10));
-
     const handleGenerate = () => {
         if (map) {
-            pollutedPoints.forEach(point => map.geoObjects.remove(point));
+            // Clear existing points
+            pollutedPoints.forEach((point) => map.geoObjects.remove(point));
             setPollutedPoints([]);
-
-            const points = [];
-            let count = 0;
-            const interval = setInterval(() => {
-                if (count < 15) {
-                    const [lat, lon] = getRandomCoordinates();
-                    const pollutionLevel = Math.floor(Math.random() * 100) + 50;
-
-                    const point = new ymaps.Placemark(
-                        [lat, lon],
-                        {
-                            hintContent: `Pollution Level: ${pollutionLevel} µg/m³`,
-                            balloonContent: `<strong>Location:</strong> (${lat.toFixed(4)}, ${lon.toFixed(4)})<br/><strong>Pollution:</strong> ${pollutionLevel} µg/m³`,
-                        },
-                        { preset: 'islands#redDotIcon' }
-                    );
-
-                    map.geoObjects.add(point);
-                    points.push(point);
-                    setPollutedPoints(prev => [...prev, point]);
-                    count++;
-                } else {
-                    clearInterval(interval);
-                    updateChartData();
-                }
-            }, 500);
-        }
-    };
-
-    const updateChartData = () => {
-        const data2022 = getRandomPollutionLevels(50);
-        const data2023 = getRandomPollutionLevels(55);
-        const data2024 = getRandomPollutionLevels(60);
-
-        setChartData({
-            year2022: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'PM2.5 Levels (µg/m³) in 2022',
-                        data: data2022,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: true,
-                    },
-                ],
-            },
-            year2023: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'PM2.5 Levels (µg/m³) in 2023',
-                        data: data2023,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        fill: true,
-                    },
-                ],
-            },
-            year2024: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [
-                    {
-                        label: 'PM2.5 Levels (µg/m³) in 2024',
-                        data: data2024,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        fill: true,
-                    },
-                ],
-            },
-        });
-    };
-
-    const getLocation = () => {
-        if (!map) {
-            alert('Map is not ready yet. Please try again later.');
-            return;
-        }
     
+            const points = [];
+            const pollutionLevelsPM25 = []; // Array to store PM2.5 levels
+    
+            // Fetch pollution data for each region
+            const fetchPromises = TASHKENT_REGIONS.map((region) => {
+                const requestData = {
+                    latitude: region.coordinates[0],
+                    longitude: region.coordinates[1],
+                };
+    
+                return fetch('https://back.ecomonitoring.uz/monitoring/v1/current/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNTczNTExLCJpYXQiOjE3MzM0ODcxMTEsImp0aSI6IjIwZDA4NGQ5ZGRmMjQ1ZTc5OTZmMmZmYzgwNDkzNmRiIiwidXNlcl9pZCI6M30.KsW_mE6sfijmRTVQXxrgN6tWikABGHnWCQn_p_ohdSE', // Replace with your actual token
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch data for ${region.name}: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(`${region.name} Pollution Data:`, data);
+    
+                        // Extract PM2.5 data
+                        const pm25 = data.list[0]?.components?.pm2_5 || 0;
+    
+                        // Add a placemark for the region
+                        const placemark = new ymaps.Placemark(
+                            region.coordinates,
+                            {
+                                hintContent: `${region.name}: PM2.5 - ${pm25} µg/m³`,
+                                balloonContent: `
+                                    <strong>Region:</strong> ${region.name}<br/>
+                                    <strong>Pollution:</strong><br/>
+                                    PM2.5: ${pm25} µg/m³`,
+                            },
+                            { preset: 'islands#redDotIcon' }
+                        );
+                        map.geoObjects.add(placemark);
+                        points.push(placemark);
+    
+                        // Store PM2.5 levels for the chart
+                        pollutionLevelsPM25.push(pm25);
+                    })
+                    .catch((error) => {
+                        console.error(`Error fetching data for ${region.name}:`, error);
+                    });
+            });
+    
+            // Wait for all fetch requests to complete
+            Promise.all(fetchPromises)
+                .then(() => {
+                    setPollutedPoints(points); // Update points on the map
+                    setChartData({
+                        labels: TASHKENT_REGIONS.map((region) => region.name),
+                        datasets: [
+                            {
+                                label: 'PM2.5 Pollution',
+                                data: pollutionLevelsPM25,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                fill: true,
+                            },
+                        ],
+                    });
+                });
+        }
+    };
+    
+    const handleShowMyLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                position => {
-                    const { latitude, longitude } = position.coords;
-                    setUserLocation([latitude, longitude]);
-    
-                    // Create a marker for the user's location
-                    const userMarker = new ymaps.Placemark(
-                        [latitude, longitude],
-                        { hintContent: 'Your Location', balloonContent: 'You are here!' },
+                (position) => {
+                    const userCoordinates = [position.coords.latitude, position.coords.longitude];
+                    const userLocationMarker = new ymaps.Placemark(
+                        userCoordinates,
+                        {
+                            hintContent: 'Your Location',
+                            balloonContent: `<strong>Your Location:</strong><br/>Lat: ${position.coords.latitude}<br/>Lon: ${position.coords.longitude}`,
+                        },
                         { preset: 'islands#blueDotIcon' }
                     );
-    
-                    map.geoObjects.add(userMarker);
-                    map.setCenter([latitude, longitude], 13);
+
+                    map.geoObjects.add(userLocationMarker);
+                    map.setCenter(userCoordinates, 14, { checkZoomRange: true });
                 },
-                error => {
-                    console.error('Error getting location:', error);
-    
-                    let errorMessage = 'Unable to retrieve your location.';
-                    if (error.code === error.PERMISSION_DENIED) {
-                        errorMessage = 'Location access was denied. Please allow location access and try again.';
-                    } else if (error.code === error.POSITION_UNAVAILABLE) {
-                        errorMessage = 'Location information is unavailable. Check your GPS or network settings.';
-                    } else if (error.code === error.TIMEOUT) {
-                        errorMessage = 'Location request timed out. Please try again.';
-                    }
-                    alert(errorMessage);
-                },
-                {
-                    enableHighAccuracy: true, 
-                    timeout: 10000, 
-                    maximumAge: 0, 
+                (error) => {
+                    alert('Error retrieving your location');
                 }
             );
         } else {
-            console.error('Geolocation is not supported by this browser.');
-            alert('Geolocation is not supported by your browser.');
+            alert('Geolocation is not supported by your browser');
         }
     };
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: true },
+            title: { display: true, text: 'Pollution Levels in Tashkent Regions Over the Years' },
+        },
         scales: {
-            y: {
-                min: 0,
-                max: 100,
-                title: { display: true, text: 'PM2.5 Levels (µg/m³)' },
-            },
+            x: { title: { display: true, text: 'Regions' } },
+            y: { min: 0, max: 150, title: { display: true, text: 'Pollution Levels (µg/m³)' } },
         },
     };
+
+    const getPollutionData = () => {
+        const pollutionLevels2024 = [];
+        const pollutionLevelsPM25 = []; // For PM2.5 levels
+    
+        // Clear existing markers
+        pollutedPoints.forEach((point) => map.geoObjects.remove(point));
+        setPollutedPoints([]);
+    
+        // Request data for each region
+        const regionPromises = TASHKENT_REGIONS.map((region) => {
+            const requestData = {
+                latitude: region.coordinates[0],
+                longitude: region.coordinates[1],
+            };
+    
+            return fetch('https://back.ecomonitoring.uz/monitoring/v1/current/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNTU5MDY2LCJpYXQiOjE3MzM0NzI2NjYsImp0aSI6ImM5YmY2ODdmYjYxOTQ0OGJhZjM1NWFlZjU5MTk1MWVmIiwidXNlcl9pZCI6Mn0.Ez022zp-pqx8woMv_RrjamokBox5ywcFi3Rva0ekc78',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch data for ${region.name}: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(`${region.name} Pollution Data:`, data);
+    
+                    // Extract pollution data (adjust based on API response)
+                    const pollutionLevels = data.list[0].components;
+    
+                    pollutionLevels2024.push(pollutionLevels.o3 || 0);
+                    pollutionLevelsPM25.push(pollutionLevels.pm2_5 || 0);
+    
+                    // Add a placemark for the region
+                    const placemark = new ymaps.Placemark(
+                        region.coordinates,
+                        {
+                            hintContent: `${region.name}: ${pollutionLevels.pm2_5} µg/m³ (PM2.5)`,
+                            balloonContent: `
+                                <strong>Region:</strong> ${region.name}<br/>
+                                <strong>Pollution:</strong><br/>
+                                CO: ${pollutionLevels.co} µg/m³<br/>
+                                NO2: ${pollutionLevels.no2} µg/m³<br/>
+                                O3: ${pollutionLevels.o3} µg/m³<br/>
+                                PM2.5: ${pollutionLevels.pm2_5} µg/m³`,
+                        },
+                        { preset: 'islands#redDotIcon' }
+                    );
+                    map.geoObjects.add(placemark);
+                    return placemark;
+                })
+                .catch((error) => {
+                    console.error(`Error fetching data for ${region.name}:`, error);
+                });
+        });
+    
+        // Once all the requests are complete
+        Promise.all(regionPromises)
+            .then((points) => {
+                setPollutedPoints(points); // Update markers
+    
+                // Update chart data with the fetched pollution levels
+                setChartData({
+                    labels: TASHKENT_REGIONS.map((region) => region.name),
+                    datasets: [
+                        {
+                            label: 'O3 Pollution (2024)',
+                            data: pollutionLevels2024,
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            fill: true,
+                        },
+                        {
+                            label: 'PM2.5 Pollution',
+                            data: pollutionLevelsPM25,
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                            fill: true,
+                        },
+                    ],
+                });
+            })
+            .catch((error) => {
+                console.error('Error updating chart and map:', error);
+            });
+    };
+    
+    
 
     return (
         <div>
             <div id="map" style={{ width: '100%', height: '500px' }}></div>
-            <div style={{ marginTop: '20px', marginLeft:'40px' , display: 'flex', gap: '10px' }}>
-                <button onClick={handleGenerate} style={buttonStyle}>
-                    Generate
-                </button>
-                <button onClick={getLocation} style={buttonStyle}>
-                    Show My Location
-                </button>
-            </div>
+            <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+                <button onClick={handleGenerate} style={buttonStyle}>Generate</button>
+                <button onClick={handleShowMyLocation} style={buttonStyle}>Show My Location</button>
+                {/* <button onClick={getPollutionData} style={buttonStyle}>Current Pollution Data</button> */}
 
-            <div className="chart-container">
-                <div className="chart">
-                    <h4>Air Pollution in Tashkent - 2022</h4>
-                    <Line data={chartData.year2022} options={chartOptions} />
-                </div>
-                <div className="chart">
-                    <h4>Air Pollution in Tashkent - 2023</h4>
-                    <Line data={chartData.year2023} options={chartOptions} />
-                </div>
-                <div className="chart">
-                    <h4>Air Pollution in Tashkent - 2024</h4>
-                    <Line data={chartData.year2024} options={chartOptions} />
-                </div>
+            </div>
+            
+            <div style={{ marginTop: '20px', width: '100%', height: '400px' }}>
+                <h3>Pollution Levels for 2024</h3>
+                <Line data={chartData} options={chartOptions} />
             </div>
         </div>
     );
@@ -221,8 +304,8 @@ const MapComponent = () => {
 const buttonStyle = {
     padding: '10px 20px',
     fontSize: '16px',
-    backgroundColor: '#007bff',
-    color: '#fff',
+    backgroundColor: '#4CAF50',
+    color: 'white',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',

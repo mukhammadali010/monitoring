@@ -30,11 +30,6 @@ const SignIn = () => {
   };
 
   const onSubmit = () => {
-    // Hardcoded credentials
-    const validEmail = "muhammadalinosirov34@gmail.com";
-    const validPassword = "muhammadali123";
-
-    // Ensure all fields are filled
     if (!data.email || !data.password) {
       setAlertState({
         open: true,
@@ -44,25 +39,51 @@ const SignIn = () => {
       return;
     }
 
-    // Validate credentials
-    if (data.email === validEmail && data.password === validPassword) {
-      setAlertState({
-        open: true,
-        message: "Login successful!",
-        severity: "success",
-      });
+    fetch(`https://back.ecomonitoring.uz/account/v1/login/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": "uz",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.detail || "Login failed. Please try again.");
+          });
+        }
+        return res.json();
+      })
+      .then((res) => {
+        console.log("Login successful:", res);
 
-      // Delay navigation to show the alert
-      setTimeout(() => {
-        navigate("/home"); // Redirect to home page
-      }, 2000); // 2 seconds delay
-    } else {
-      setAlertState({
-        open: true,
-        message: "Invalid email or password.",
-        severity: "error",
+        // Tokenlarni LocalStorage'ga saqlash
+        localStorage.setItem("access_token", res.access);
+        localStorage.setItem("refresh_token", res.refresh);
+        localStorage.setItem("account_id", res.account_id);
+        localStorage.setItem("expires_in", res.expires_in);
+
+        // Muvaffaqiyatli xabar va navigatsiya
+        setAlertState({
+          open: true,
+          message: "Login successful! Redirecting to home...",
+          severity: "success",
+        });
+
+        // 3 soniya kutib, home sahifasiga o'tish
+        setTimeout(() => {
+          navigate("/home"); // Marshrutingizga mos ravishda yo'naltirish
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+        setAlertState({
+          open: true,
+          message: error.message || "An error occurred. Please try again.",
+          severity: "error",
+        });
       });
-    }
   };
 
   const onSignUp = () => {

@@ -49,7 +49,7 @@ const SignUp = () => {
     }
 
     // Fetch API call
-    fetch("http://back.ecomonitoring.uz/account/v1/register/", {
+    fetch("https://back.ecomonitoring.uz/account/v1/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
