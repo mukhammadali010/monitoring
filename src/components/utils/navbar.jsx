@@ -47,7 +47,7 @@ export const navbar = [
   {
     id: '4',
     path: "automobilSanoat",
-    title: "AutoSanoat",
+    title: "Auto Industry",
     element: (
       <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
         <AutoSanoat/>
@@ -68,16 +68,16 @@ export const navbar = [
     isPrivate: false,
     isHidden: false ,
   },
-  {
-    id: '6',
-    path: "/signup",
-    title: "Ro'yxatdan o'tish",
-    element: (
-      <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
-        <Contact/>
-      </React.Suspense>
-    ),
-    isPrivate: false,
-    isHidden: true,
-  },
+  // {
+  //   id: '6',
+  //   path: "/signup",
+  //   title: "Ro'yxatdan o'tish",
+  //   element: (
+  //     <React.Suspense fallback={<React.Fragment>Loading...</React.Fragment>}>
+  //       <Contact/>
+  //     </React.Suspense>
+  //   ),
+  //   isPrivate: false,
+  //   isHidden: true,
+  // },
 ];

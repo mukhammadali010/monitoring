@@ -59,15 +59,48 @@ const Button = styled.button`
 `;
 
 const Contact = () => {
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const formData = {
+      name: e.target.elements.name.value,
+      email: e.target.elements.email.value,
+      message: e.target.elements.message.value,
+    };
+  
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyZ0QRb-XAp-wJxNZUvR5jCBmd0vy4QV7VCusa0WQ4cIDbU-W9SYxLwY-H70qd02YCq/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Success:', data);
+      } else {
+        console.error('Error:', response.statusText);
+        const responseBody = await response.text();
+        console.error('Response Body:', responseBody);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+  
+  
   return (
     <>
-  
     <ContactContainer>
       <Title>Contact Us</Title>
-      <Form>
-        <Input type="text" placeholder="Your Name" required />
-        <Input type="email" placeholder="Your Email" required />
-        <Textarea placeholder="Your Message" rows="5" required />
+      <Form method='POST' onSubmit={handleSubmit}>
+        {/* Add 'name' attributes */}
+        <Input type="text" name="name" placeholder="Your Name" required />
+        <Input type="email" name="email" placeholder="Your Email" required />
+        <Textarea name="message" placeholder="Your Message" rows="5" required />
         <Button type="submit">Send Message</Button>
       </Form>
     </ContactContainer>

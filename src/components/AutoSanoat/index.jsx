@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Content, Wrapper } from "./style";
 import Footer from "../Footer";
-import HistoricalDataFetcher from "../HistoricalDataFetcher";
+// import HistoricalDataFetcher from "../HistoricalDataFetcher";
 
 const AutoSanoat = () => {
   return (
     <>
-    <HistoricalDataFetcher/>
+    {/* <HistoricalDataFetcher/> */}
       <Container>
         <Content>
           <h2 style={{ color: '#1976d2' }}>Automobil Sanoati</h2>

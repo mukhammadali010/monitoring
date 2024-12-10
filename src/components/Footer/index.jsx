@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <Container>
       <FooterSection>
-        <FooterTitle>Biz bilan Aloqa</FooterTitle>
+        <FooterTitle>Contact us</FooterTitle>
         <FooterItem>Email: muhammadalinosirov34@gmail.com</FooterItem>
         <FooterItem>Phone: +998904061430</FooterItem>
         <FooterItem>Address: Toshkent 100084, Amir Temur shox ko‘chasi 108 uy </FooterItem>
