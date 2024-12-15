@@ -20,30 +20,7 @@ export const navbar = [
     isPrivate: false,
     isHidden: true,
   },
-  {
-    id: '2',
-    path: 'signin',
-    title: 'Sign In',
-    element: (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <SignIn />
-      </React.Suspense>
-    ),
-    isPrivate: true,
-    isHidden: true,
-  },
-  {
-    id: '3',
-    path: 'signup',
-    title: 'Sign Up',
-    element: (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <SignUp />
-      </React.Suspense>
-    ),
-    isPrivate: true,
-    isHidden: true,
-  },
+ 
   {
     id: '4',
     path: "automobilSanoat",
@@ -67,6 +44,30 @@ export const navbar = [
     ),
     isPrivate: false,
     isHidden: false ,
+  },
+  {
+    id: '2',
+    path: 'signin',
+    title: 'Sign In',
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <SignIn />
+      </React.Suspense>
+    ),
+    isPrivate: true,
+    isHidden: true,
+  },
+  {
+    id: '3',
+    path: 'signup',
+    title: 'Sign Up',
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <SignUp />
+      </React.Suspense>
+    ),
+    isPrivate: true,
+    isHidden: true,
   },
   // {
   //   id: '6',

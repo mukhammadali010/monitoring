@@ -12,6 +12,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const YANDEX_MAPS_API_KEY = '78eb91a1-8baf-4f28-be21-30ad54e78407';
 const token = localStorage.getItem('access_token');
+
 const TASHKENT_REGIONS = [
     { name: 'Yunusabad', coordinates: [41.3664, 69.2806] },
     { name: 'Mirzo Ulugbek', coordinates: [41.3383, 69.3345] },
@@ -151,7 +152,6 @@ const MapComponent = () => {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log(`${region.name} Pollution Data:`, data);
 
                     // Extract pollution data (adjust based on API response)
                     const pollutionLevels = data.list[0].components;
@@ -246,6 +246,7 @@ const MapComponent = () => {
                     if (!response.ok) throw new Error("Failed to fetch data.");
 
                     const data = await response.json();
+                    
                     return { region, pollution: data.list[data.list.length - 1]?.components.pm2_5 || 0 };
                 })
             );
@@ -279,7 +280,7 @@ const MapComponent = () => {
     return (
         <div>
             <div id="map" style={{ width: '100%', height: '500px'}}></div>
-            <div style={{ marginTop: '20px', border:'1px solid red' , display: 'flex', alignItems:'center', justifyContent:'center' , gap: '10px' }}>
+            <div style={{ marginTop: '20px' , display: 'flex', alignItems:'center', justifyContent:'center' , gap: '10px' }}>
                 <button onClick={handleShowMyLocation} className='btnGenerate'>Show My Location</button>
                 <button onClick={getPollutionData} className='btnGenerate'>Current Pollution Level</button>
                 <div style={{display:'flex' , gap:'40px',  alignItems:'end' , justifyContent:'center'}}>

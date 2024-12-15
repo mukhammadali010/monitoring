@@ -1,15 +1,15 @@
-import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import { navbar } from '../utils/navbar'; // Adjust path to navbar.js
-import Navbar from '../Navbar'; // Adjust path to Navbar.jsx
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { navbar } from "../utils/navbar"; // Import navbar configuration
+import Navbar from "../Navbar"; // Adjust the path as needed
 
 const Root = () => {
   return (
     <Routes>
-      {/* Parent Route with Navbar */}
+      {/* Parent route with Navbar */}
       <Route path="/" element={<Navbar />}>
-        {/* Redirect default "/" to signup */}
-        <Route index element={<Navigate to="/signup" replace />} />
+        {/* Default route redirects to /signin */}
+        <Route index element={<Navigate to="/signin" replace />} />
 
         {/* Map through navbar configuration to define routes */}
         {navbar.map((item) => (
